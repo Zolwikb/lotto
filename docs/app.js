@@ -83,7 +83,7 @@ function saveMe() {
 }
 
 // ---------- stan ----------
-const state = { tab: 'typy', game: 'lotto', rankGame: 'all', histCount: 12, data: null, error: null, loadedAt: 0, me: loadMe(), backup: '' };
+const state = { tab: 'typy', game: 'lotto', rankGame: 'all', histCount: 12, archCount: 30, archQuery: '', data: null, error: null, loadedAt: 0, me: loadMe(), backup: '' };
 
 async function getJson(name, fallback) {
   try {
@@ -266,6 +266,40 @@ function viewHistoria() {
   return `<h1>Historia</h1>${segHtml(Object.entries(GAMES).map(([k, v]) => [k, v.label]), g, 'g')}${body}${more}`;
 }
 
+// Wyszukiwanie po dacie: 2025, 2025-03, 03.2025 albo 14.03.2025.
+function archivePrefix(q) {
+  q = q.trim();
+  let m = q.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  if (m) return `${m[3]}-${pad(m[2])}-${pad(m[1])}`;
+  m = q.match(/^(\d{1,2})\.(\d{4})$/);
+  if (m) return `${m[2]}-${pad(m[1])}`;
+  return q;
+}
+
+function archList() {
+  const g = state.game;
+  const all = state.data.draws[g];
+  const prefix = archivePrefix(state.archQuery);
+  const found = all.filter((d) => d.date.startsWith(prefix)).sort((a, b) => b.date.localeCompare(a.date));
+  if (!all.length) return `<div class="empty"><b>Archiwum jest puste</b>Losowania pojawią się po uruchomieniu zadania „backfill” w zakładce Actions na GitHubie.</div>`;
+  if (!found.length) return `<div class="empty"><b>Brak losowań dla „${esc(state.archQuery)}”</b>Wpisz rok (2024), miesiąc (2024-05 albo 05.2024) lub dzień (14.05.2024).</div>`;
+  const shown = found.slice(0, state.archCount);
+  const rows = shown.map((d) => {
+    const wd = new Date(d.date + 'T12:00:00Z').toLocaleDateString('pl-PL', { weekday: 'short', timeZone: 'UTC' });
+    return `<div class="arch-row"><span class="d">${esc(wd)} ${esc(dayShort(d.date))}</span>${numsHtml(d.numbers, 'win')}</div>`;
+  }).join('');
+  const more = found.length > shown.length ? `<div class="row-actions"><button class="btn ghost" data-action="more-arch">Pokaż starsze</button></div>` : '';
+  const range = `${dayShort(all[0].date)} – ${dayShort(all[all.length - 1].date)}`;
+  return `<p class="muted small">Losowań: ${found.length}${prefix ? ` (z ${all.length}, w archiwum od ${esc(range)})` : `, od ${esc(range)}`}. Pokazuję ${shown.length}.</p>${rows}${more}`;
+}
+
+function viewArchiwum() {
+  return `<h1>Archiwum</h1>
+    ${segHtml(Object.entries(GAMES).map(([k, v]) => [k, v.label]), state.game, 'g')}
+    <input class="search" id="arch-q" type="search" inputmode="search" autocomplete="off" placeholder="Szukaj daty, np. 2025 lub 03.2025" aria-label="Szukaj po dacie" value="${esc(state.archQuery)}">
+    <div id="arch-list">${archList()}</div>`;
+}
+
 function viewInfo() {
   const { cfg, meta, draws } = state.data;
   const upd = meta.updatedAt ? new Date(meta.updatedAt).toLocaleString('pl-PL', { timeZone: TZ, dateStyle: 'medium', timeStyle: 'short' }) : 'jeszcze nie było';
@@ -300,7 +334,7 @@ function render() {
     return;
   }
   if (!state.data) { view.innerHTML = '<h1>Trzej wróżbici</h1><p class="muted">Wczytuję…</p>'; return; }
-  view.innerHTML = { typy: viewTypy, ranking: viewRanking, historia: viewHistoria, info: viewInfo }[state.tab]();
+  view.innerHTML = { typy: viewTypy, ranking: viewRanking, historia: viewHistoria, archiwum: viewArchiwum, info: viewInfo }[state.tab]();
 }
 
 // ---------- okno wyboru liczb ----------
@@ -359,6 +393,7 @@ document.addEventListener('click', async (e) => {
   const act = a.dataset.action;
   if (act === 'pick') openSheet(state.game, a.dataset.date);
   else if (act === 'more') { state.histCount += 12; render(); }
+  else if (act === 'more-arch') { state.archCount += 30; $('#arch-list').innerHTML = archList(); }
   else if (act === 'reload') { await load(); render(); }
   else if (act === 'export') { state.backup = JSON.stringify(state.me); render(); }
   else if (act === 'import') {
@@ -386,6 +421,13 @@ setInterval(() => {
     if (!(state.data.cfg.startDate && nd.date < state.data.cfg.startDate)) c.textContent = countdownText(nd.at);
   }
 }, 30000);
+
+document.addEventListener('input', (e) => {
+  if (e.target.id !== 'arch-q') return;
+  state.archQuery = e.target.value;
+  state.archCount = 30;
+  $('#arch-list').innerHTML = archList();
+});
 
 document.addEventListener('visibilitychange', async () => {
   if (document.visibilityState === 'visible' && Date.now() - state.loadedAt > 5 * 60 * 1000) { await load(); render(); }
