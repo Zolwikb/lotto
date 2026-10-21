@@ -1,0 +1,47 @@
+name: Typy Lotto
+
+on:
+  schedule:
+    - cron: '30 22 * * *'   # po losowaniu (rozliczenie + typy na następne)
+    - cron: '0 6 * * *'     # poranne domknięcie, gdyby wynik się spóźnił
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Co uruchomić'
+        type: choice
+        default: run
+        options: [run, backfill, check-api]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lotto
+  cancel-in-progress: false
+
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Uruchom
+        env:
+          TASK: ${{ inputs.task || 'run' }}
+          LOTTO_API_KEY: ${{ secrets.LOTTO_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/$TASK.js
+      - name: Zapisz dane w repozytorium
+        run: |
+          git config user.name "lotto-bot"
+          git config user.email "lotto-bot@users.noreply.github.com"
+          git add docs/data
+          if ! git diff --cached --quiet; then
+            git commit -m "Dane: $(date -u +%F' '%H:%M) UTC"
+            git pull --rebase
+            git push
+          fi

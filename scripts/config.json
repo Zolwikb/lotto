@@ -1,0 +1,18 @@
+{
+  "startDate": "2026-10-22",
+  "recentDraws": 1500,
+  "schedule": { "days": [2, 4, 6], "hour": 22, "minute": 0 },
+  "models": {
+    "claude": "claude-haiku-5-5",
+    "gemini": "gemini-2.5-flash",
+    "chatgpt": "gpt-5-mini"
+  },
+  "players": [
+    { "id": "claude", "name": "Claude", "kind": "model" },
+    { "id": "gemini", "name": "Gemini", "kind": "model" },
+    { "id": "chatgpt", "name": "ChatGPT", "kind": "model" },
+    { "id": "random", "name": "Komputer (losowo)", "kind": "random" },
+    { "id": "fixed", "name": "Stałe liczby", "kind": "fixed" }
+  ],
+  "fixed": { "lotto": null, "lottoplus": null }
+}

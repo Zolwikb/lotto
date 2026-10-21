@@ -1,0 +1,11 @@
+{
+  "name": "lotto-typer",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "run": "node scripts/run.js",
+    "backfill": "node scripts/backfill.js",
+    "check-api": "node scripts/check-api.js"
+  }
+}

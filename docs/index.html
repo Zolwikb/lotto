@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Trzej wróżbici</title>
+  <meta name="description" content="Claude, Gemini i ChatGPT typują Lotto. Ranking przez rok.">
+  <meta name="theme-color" content="#f3f2f8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#110f26" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Wróżbici">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="view" aria-live="polite"></main>
+  <nav id="tabs" aria-label="Główne menu">
+    <button data-tab="typy" aria-current="page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8l3 3M11 8l-3 3M13.5 9.5h3M8 15l3 3M11 15l-3 3M13.5 16.5h3"/></svg>
+      Typy
+    </button>
+    <button data-tab="ranking">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg>
+      Ranking
+    </button>
+    <button data-tab="historia">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>
+      Historia
+    </button>
+    <button data-tab="info">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8v.01"/></svg>
+      Info
+    </button>
+  </nav>
+  <div id="sheet-root"></div>
+  <script src="app.js" type="module"></script>
+</body>
+</html>
