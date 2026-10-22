@@ -1,1 +1,8 @@
-{ "updatedAt": null, "next": null, "startDate": "2026-10-22" }
+{
+ "updatedAt": "2026-10-22T00:45:50.936Z",
+ "next": {
+  "date": "2026-10-22",
+  "at": "2026-10-22T20:00:00.000Z"
+ },
+ "startDate": "2026-10-22"
+}

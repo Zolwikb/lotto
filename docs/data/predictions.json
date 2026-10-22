@@ -1,1 +1,36 @@
-[]
+[
+ {
+  "game": "lotto",
+  "drawDate": "2026-10-22",
+  "player": "random",
+  "createdAt": "2026-10-22T00:45:51.634Z",
+  "hits": null,
+  "numbers": [
+   2,
+   15,
+   18,
+   33,
+   36,
+   44
+  ],
+  "reasoning": "Losowanie komputerowe, bez żadnej metody.",
+  "status": "ok"
+ },
+ {
+  "game": "lottoplus",
+  "drawDate": "2026-10-22",
+  "player": "random",
+  "createdAt": "2026-10-22T00:45:51.636Z",
+  "hits": null,
+  "numbers": [
+   8,
+   14,
+   29,
+   35,
+   36,
+   41
+  ],
+  "reasoning": "Losowanie komputerowe, bez żadnej metody.",
+  "status": "ok"
+ }
+]
