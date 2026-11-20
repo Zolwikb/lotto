@@ -436,7 +436,7 @@
   "drawDate": "2026-11-19",
   "player": "random",
   "createdAt": "2026-11-18T03:45:01.020Z",
-  "hits": null,
+  "hits": 1,
   "numbers": [
    6,
    8,
@@ -446,14 +446,15 @@
    37
   ],
   "reasoning": "Losowanie komputerowe, bez żadnej metody.",
-  "status": "ok"
+  "status": "ok",
+  "drawId": 7433
  },
  {
   "game": "lottoplus",
   "drawDate": "2026-11-19",
   "player": "random",
   "createdAt": "2026-11-18T03:45:01.021Z",
-  "hits": null,
+  "hits": 0,
   "numbers": [
    1,
    20,
@@ -461,6 +462,41 @@
    31,
    33,
    49
+  ],
+  "reasoning": "Losowanie komputerowe, bez żadnej metody.",
+  "status": "ok",
+  "drawId": 7433
+ },
+ {
+  "game": "lotto",
+  "drawDate": "2026-11-21",
+  "player": "random",
+  "createdAt": "2026-11-20T03:35:44.836Z",
+  "hits": null,
+  "numbers": [
+   3,
+   11,
+   17,
+   23,
+   26,
+   28
+  ],
+  "reasoning": "Losowanie komputerowe, bez żadnej metody.",
+  "status": "ok"
+ },
+ {
+  "game": "lottoplus",
+  "drawDate": "2026-11-21",
+  "player": "random",
+  "createdAt": "2026-11-20T03:35:44.836Z",
+  "hits": null,
+  "numbers": [
+   1,
+   13,
+   25,
+   26,
+   35,
+   45
   ],
   "reasoning": "Losowanie komputerowe, bez żadnej metody.",
   "status": "ok"
